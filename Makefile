@@ -13,14 +13,17 @@ install:
 run:
 	cargo run
 
+test:
+	cargo test
+
 docker-build:
-	docker build -t ${REPOSITORY}/hello-world-rust .
+	docker build -t ${REPOSITORY}/crypto-gains .
 
 docker-run:
-	docker run -p 9000:9000 ${REPOSITORY}/hello-world-rust
+	docker run -p 9000:9000 ${REPOSITORY}/crypto-gains
 
 docker-push:
-	docker push ${REPOSITORY}/hello-world-rust
+	docker push ${REPOSITORY}/crypto-gains
 
 kill-all:
 	docker kill $(docker container ls -q)

@@ -1,27 +1,50 @@
 use std::error::Error;
 use csv::Reader;
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Deserialize)]
-struct Record {
+use crate::lib;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Record {
     date: String,
     asset: String,
     opened_amount: f32,
-    market_value: f32,
+    purchase_price: f32,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NewRecord {
+    date: String,
+    asset: String,
+    opened_amount: f32,
+    purchase_price: f32,
+    current_value: f32,
+    profit_loss: f32,
+}
 
-
-pub fn read_csv_file(path: &str) -> Result<(), Box<dyn Error>> {
+pub fn read_csv_file(path: &str) -> Result<Vec<NewRecord>, Box<dyn Error>> {
     let mut reader = Reader::from_path(path)?;
     let headers = reader.headers()?;
     println!("{:?}", headers);
 
+    let mut records: Vec<NewRecord> = Vec::new();
+
     for result in reader.deserialize() {
         let record: Record = result?;
-        println!("{:?}", record);
+        
+        let new_record = NewRecord {
+            date: record.date,
+            asset: record.asset,
+            opened_amount: record.opened_amount,
+            purchase_price: record.purchase_price,
+            current_value: 60000.32,
+            profit_loss: lib::calculate_profit_loss(60000.0, record.opened_amount, record.purchase_price),
+        };
+        
+        records.push(new_record)
     }
 
-    Ok(())
-}
+    println!("Records: {:?}", records);
 
+    Ok(records)
+}
