@@ -4,6 +4,7 @@ use tera::{Tera, Context};
 mod config;
 mod csv_reader;
 mod lib;
+mod http;
 
 
 async fn index(tera: web::Data<Tera>) -> impl Responder {

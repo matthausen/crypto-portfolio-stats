@@ -3,6 +3,7 @@ use csv::Reader;
 use serde::{Serialize, Deserialize};
 
 use crate::lib;
+use crate::http;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Record {
@@ -37,7 +38,10 @@ pub fn read_csv_file(path: &str) -> Result<Vec<NewRecord>, Box<dyn Error>> {
             asset: record.asset,
             opened_amount: record.opened_amount,
             purchase_price: record.purchase_price,
-            current_value: 60000.32,
+            current_value: match http::fetch_current_price(&record.asset){
+                Ok(value) => value,
+                Err(error) => eprintln!("Could not fetch latest price for coin{}", error)
+            },
             profit_loss: lib::calculate_profit_loss(60000.0, record.opened_amount, record.purchase_price),
         };
         
