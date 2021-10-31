@@ -1,6 +1,7 @@
 use std::error::Error;
 use csv::Reader;
 use serde::{Serialize, Deserialize};
+use std::collections::HashMap;
 
 use crate::lib;
 use crate::http;
@@ -29,20 +30,41 @@ pub fn read_csv_file(path: &str) -> Result<Vec<NewRecord>, Box<dyn Error>> {
     println!("{:?}", headers);
 
     let mut records: Vec<NewRecord> = Vec::new();
+    
+    let mut all_assets_values: HashMap<String, f32> = HashMap::new();
 
     for result in reader.deserialize() {
         let record: Record = result?;
+
+        let name = &record.asset;
+
+        if !all_assets_values.contains_key(name) {
+            let value = match http::fetch_current_price(name){
+                Ok(value) => value,
+                Err(_error) => 0.0
+            };
+            all_assets_values.insert(
+                name.to_string(), value
+            );
+        }
         
         let new_record = NewRecord {
             date: record.date,
-            asset: record.asset.clone(),
+            asset: name.to_string(),
             opened_amount: record.opened_amount,
             purchase_price: record.purchase_price,
-            current_value: match http::fetch_current_price(&record.asset){
-                Ok(value) => value,
-                Err(_error) => 0.0
+            current_value: match all_assets_values.get(name) {
+                Some(&v) => v,
+                None => 0.0,
             },
-            profit_loss: lib::calculate_profit_loss(60000.0, record.opened_amount, record.purchase_price),
+            profit_loss: lib::calculate_profit_loss(
+                match all_assets_values.get(name) {
+                    Some(&v) => v,
+                    None => 0.0,
+                }, 
+                record.opened_amount, 
+                record.purchase_price
+            ),
         };
         
         records.push(new_record)

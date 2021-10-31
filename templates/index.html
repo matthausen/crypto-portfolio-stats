@@ -4,9 +4,44 @@
         <meta charset="utf-8">
         <title>Crypto gainZ</title>
     </head>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        </style>
     <body>
-        {% for data in crypto_data %}
-        <li>{{ data.asset }}</li>
-    {% endfor %}
+
+        <table>
+            <tr>
+              <th>Date</th>
+              <th>Asset</th>
+              <th>Open amount</th>
+              <th>Purchase Price</th>
+              <th>Current Price</th>
+              <th>P/L %</th>
+            </tr>
+            {% for data in crypto_data %}
+                <tr>
+                    <td>{{ data.date }}</td>
+                    <td>{{ data.asset }}</td>
+                    <td>{{ data.opened_amount }}</td>
+                    <td>{{ data.purchase_price }}</td>
+                    <td>{{ data.current_value }}</td>
+                    <td>{{ data.profit_loss }}</td>
+                </tr>
+            {% endfor %}
+          </table>
     </body>
 </html>

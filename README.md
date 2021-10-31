@@ -1,23 +1,25 @@
-TODO
+Read from a csv list of positions opened on various trading platform.
+Fetch the current price of those crypto assets from the CoinMarketPlace API and calculate the percentage of profit loss.
 
+### The CSV
+Create a csv with this structure
 
-- use API to fetch current crypto value
-https://pro-api.coinmarketcap.com
+```
+date,asset,opened_amount,purchase_price
+19-8-2021,BTC,100,34130.09
+27-8-2021,ETH,80,35613.54
+3-9-2021,ADA,50,36224
+30-9-2021,SOL,30,2.1682
+```
 
-https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyQuotesHistorical
+The asset is the symbol used by the CoinMarketPlace API to fetch the current price of the asset
+The opened_amount is the the amount of fiat you used to buy the asset (by default everything is in GBP)
+The purchase_price is the price in GBP of the asset when the purchase took place
 
-- loop through the vector in the forntend and display
-
-
-curl -H "X-CMC_PRO_API_KEY: db1fbebb-bd4d-4ffb-8f4f-1686b8771b84" -H "Accept: application/json" -G https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=BTC&convert=GBP
-
-
-### Export and verify the file path of your csv file:
+### Export a couple of environment variable needed to run:
 
 - `export CRYPTO=path/to/myfile.csv`
-
-- `echo $CRYPTO`
-
+- `export API_KEY=<my-secret-api-key>`
 
 ### CoinMarketCap API Response example:
 
