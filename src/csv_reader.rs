@@ -35,12 +35,12 @@ pub fn read_csv_file(path: &str) -> Result<Vec<NewRecord>, Box<dyn Error>> {
         
         let new_record = NewRecord {
             date: record.date,
-            asset: record.asset,
+            asset: record.asset.clone(),
             opened_amount: record.opened_amount,
             purchase_price: record.purchase_price,
             current_value: match http::fetch_current_price(&record.asset){
                 Ok(value) => value,
-                Err(error) => eprintln!("Could not fetch latest price for coin{}", error)
+                Err(_error) => 0.0
             },
             profit_loss: lib::calculate_profit_loss(60000.0, record.opened_amount, record.purchase_price),
         };

@@ -16,6 +16,9 @@ run:
 test:
 	cargo test
 
+build-release:
+	cargo build --release
+
 docker-build:
 	docker build -t ${REPOSITORY}/crypto-gains .
 
@@ -28,4 +31,4 @@ docker-push:
 kill-all:
 	docker kill $(docker container ls -q)
 
-.PHONY: help install run docker-build docker-push kill-all
+.PHONY: help install run test docker-build docker-push kill-all
