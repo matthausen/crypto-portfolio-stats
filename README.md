@@ -1,6 +1,8 @@
 Read from a csv list of positions opened on various trading platform.
 Fetch the current price of those crypto assets from the CoinMarketPlace API and calculate the percentage of profit loss.
 
+API Docs: https://coinmarketcap.com/api/documentation/v1/
+
 ### The CSV
 Create a csv with this structure
 

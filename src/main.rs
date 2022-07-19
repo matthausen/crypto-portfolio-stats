@@ -11,8 +11,9 @@ async fn index(tera: web::Data<Tera>) -> impl Responder {
     let mut data = Context::new();
 
     let file_path = config::load_env_vars("CRYPTO");
+    println!("THE PATH TO CSV {}", file_path);
 
-    let crypto_data = match csv_reader::read_csv_file(&*file_path) {
+    let crypto_data = match csv_reader::read_csv_file(&file_path) {
         Ok(data) => data,
         Err(error) => panic!("Could not read from csv{:?}", error),
     };

@@ -28,6 +28,10 @@ pub async fn fetch_current_price(coin: &str) -> Result<f32, reqwest::Error> {
 
     let client = reqwest::Client::new();
 
+    // if coin == "TIME" {
+    //     // https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?slug=wonderland&convert={fiat}
+    // }
+
     let request_url = format!(
         "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol={coin}&convert={fiat}",
         coin=coin,
